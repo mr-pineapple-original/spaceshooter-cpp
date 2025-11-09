@@ -3,7 +3,7 @@ set -e
 
 # Project paths
 BUILD_DIR="build"
-EXECUTABLE="my_app"
+EXECUTABLE="SpaceShooter"
 
 # Create build directory if missing
 if [ ! -d "$BUILD_DIR" ]; then

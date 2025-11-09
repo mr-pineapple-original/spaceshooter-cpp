@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/SpaceShooter.dir/link.d CMakeFiles/SpaceShooter.dir/src/main.cpp.o -o SpaceShooter  -lsfml-graphics -lsfml-window -lsfml-system

@@ -11,14 +11,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/4.1.2/CMakeCCompiler.cmake"
   "CMakeFiles/4.1.2/CMakeCXXCompiler.cmake"
   "CMakeFiles/4.1.2/CMakeSystem.cmake"
-  "/usr/lib/cmake/SFML/SFMLConfig.cmake"
-  "/usr/lib/cmake/SFML/SFMLConfigVersion.cmake"
-  "/usr/lib/cmake/SFML/SFMLGraphicsSharedTargets-release.cmake"
-  "/usr/lib/cmake/SFML/SFMLGraphicsSharedTargets.cmake"
-  "/usr/lib/cmake/SFML/SFMLSystemSharedTargets-release.cmake"
-  "/usr/lib/cmake/SFML/SFMLSystemSharedTargets.cmake"
-  "/usr/lib/cmake/SFML/SFMLWindowSharedTargets-release.cmake"
-  "/usr/lib/cmake/SFML/SFMLWindowSharedTargets.cmake"
   "/usr/share/cmake/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake/Modules/CMakeCommonLanguageInclude.cmake"
@@ -62,5 +54,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/game.dir/DependInfo.cmake"
+  "CMakeFiles/SpaceShooter.dir/DependInfo.cmake"
   )
