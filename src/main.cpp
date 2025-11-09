@@ -1,20 +1,29 @@
-
+// Normal Libraries
+#include<iostream>
+#include<vector>
+#include<math.h>
+// Raylib Libraries
 #include<raylib.h>
+// My Libraries
+#include"game.hpp"
+#include"spaceship.hpp"
+// Using namespace
+using namespace std;
+
 int main(void)
 {
-    const int screenWidth = 800;
-    const int screenHeight = 450;
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    // Setting the window
+    const int screen_width = 750;
+    const int screen_height = 700;
+    InitWindow(screen_width, screen_height, "Space Shooters");
     SetTargetFPS(60);
-
-    while (!WindowShouldClose())
+    game_initialize(); // Call function game
+    while (!WindowShouldClose()) // When game is opened
     {
         BeginDrawing();
-
-            ClearBackground(RAYWHITE);
-
-            DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-
+            ClearBackground(BLACK);
+            game_draw();
+            DrawText("Congrats! You created your first window!", 0 , 0, 20, GRAY);
         EndDrawing();
     }
 
