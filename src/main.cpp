@@ -20,6 +20,8 @@ int main(void)
     game_initialize(); // Call function game
     while (!WindowShouldClose()) // When game is opened
     {
+        handle_input();
+        game_update();
         BeginDrawing();
             ClearBackground(BLACK);
             game_draw();

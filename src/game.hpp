@@ -3,6 +3,7 @@
 void game_initialize()
 {
     spaceship_initialize();
+    
 }
 void game_uninitialize()
 {
@@ -14,9 +15,16 @@ void game_draw()
 }
 void game_update()
 {
-
+    spaceship_boundaries();
 }
 void handle_input()
 {
-
+    if(IsKeyDown(KEY_LEFT))
+    {
+        spaceship_position.x = spaceship_position.x - 5;
+    }
+    if(IsKeyDown(KEY_RIGHT))
+    {
+        spaceship_position.x = spaceship_position.x + 5;
+    }
 }

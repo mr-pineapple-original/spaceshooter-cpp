@@ -16,6 +16,15 @@ void spaceship_draw()
 {
     DrawTextureV(spaceship_image, spaceship_position, WHITE);
 }
-void spaceship_move_left();
-void spaceship_move_right();
+void spaceship_boundaries()
+{
+    if(spaceship_position.x<=0)
+    {
+        spaceship_position.x=10;
+    }
+    if(spaceship_position.x>=730)
+    {
+        spaceship_position.x=720;
+    }
+}
 void spaceship_fire_laser();
