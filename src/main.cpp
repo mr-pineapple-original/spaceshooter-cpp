@@ -8,7 +8,6 @@
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
-a
 int main() {
   RenderWindow window(sf::VideoMode({800, 600}), "SFML window");
   window.setFramerateLimit(60);
