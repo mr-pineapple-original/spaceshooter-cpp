@@ -12,7 +12,7 @@ using namespace sf;
 int main() {
   RenderWindow window(sf::VideoMode({800, 600}), "SFML window");
   window.setFramerateLimit(60);
-  const Texture texture("../sprites/player.png");
+  const Texture texture("sprites/player.png");
   Sprite sprite(texture);
   while (window.isOpen()) {
     while (const std::optional event = window.pollEvent()) {
