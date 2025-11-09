@@ -12,10 +12,20 @@ void game_uninitialize()
 void game_draw()
 {
     spaceship_draw(); // Draw the spaceship from the spaceship header file
+    //
+    for(auto& laser: spaceship_lasers)
+    {
+        laser.draw();
+    }
 }
 void game_update()
 {
     spaceship_boundaries();
+
+    for(auto& laser: spaceship_lasers) 
+    {
+        laser.update();
+    }
 }
 void handle_input()
 {
@@ -23,8 +33,12 @@ void handle_input()
     {
         spaceship_position.x = spaceship_position.x - 5;
     }
-    if(IsKeyDown(KEY_RIGHT))
+    else if(IsKeyDown(KEY_RIGHT))
     {
         spaceship_position.x = spaceship_position.x + 5;
+    }
+    else if(IsKeyDown(KEY_SPACE)) 
+    {
+        spaceship_fire_laser();
     }
 }
