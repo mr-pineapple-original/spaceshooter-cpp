@@ -2,35 +2,43 @@
 #include <raylib.h>
 #include <iostream>
 
-struct Laser {
-  Vector2 laser_position;
-  int laser_speed;
-  bool laser_active;
-  
-  void initialize(Vector2 position, int speed) {
+struct Laser 
+{
+  Vector2 position;
+  int speed;
+  bool active;
+  Texture2D image;
+
+  Laser(Vector2 i_position, int i_speed) 
   {
-    laser_position = position;
-    laser_speed = speed;
+    position = i_position;
+    speed = i_speed;
     active=true;
+    image = LoadTexture("sprites/player-bullet.png");
   }
+
   void update()
   {
     position.y += speed;
     if (active)
     {
-      if(laser_position.y > GetScreenHeight() || laser_position.y < 0)
+      if(position.y > GetScreenHeight() || position.y < 0)
       {
         active = false;
-        std::cout << "Laser Inactive";
+        std::cout << "Laser Deleted \n";
       }
     }
   }
 
-  void draw(){
+  void draw()
+  {
     if(active) 
     {
-      DrawRectangle(laser_position.x, laser_position.y, 4, 15, {243,216,63,255});
+      //DrawRectangle(position.x, position.y, 4, 15, {243,216,63,255});
+      DrawTextureV(image, position, WHITE);
     }
   }
-}
+};
+
+
 

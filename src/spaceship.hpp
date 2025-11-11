@@ -3,7 +3,7 @@
 #include"laser.hpp"
 #include<vector>
 
-
+double spaceship_last_fired_time;
 Texture2D spaceship_image;
 Vector2 spaceship_position; // Position of Spaceship
 std::vector<Laser> spaceship_lasers;
@@ -24,16 +24,24 @@ void spaceship_draw()
 }
 void spaceship_boundaries()
 {
-    if(spaceship_position.x<=0)
+    if(spaceship_position.x<=10)
     {
         spaceship_position.x=10;
     }
     if(spaceship_position.x>=730)
     {
-        spaceship_position.x=720;
+        spaceship_position.x=730;
     }
 }
 void spaceship_fire_laser()
 {
-   spaceship_lasers.push_back(Laser({spaceship_position.x + spaceship_image.width/2 -2,spaceship_position.y}-6)); 
+    if(GetTime() - spaceship_last_fired_time >= 0.35)
+    {
+        spaceship_lasers.push_back(
+        Laser(
+            {spaceship_position.x + spaceship_image.width / 2 - 4 , spaceship_position.y}, -6
+        )
+        );
+        spaceship_last_fired_time = GetTime();
+    } 
 }

@@ -6,7 +6,6 @@ REM Check if compilation succeeded
 if %errorlevel% neq 0 (
     echo.
     echo Compilation failed!
-    pause
     exit /b %errorlevel%
 )
 
