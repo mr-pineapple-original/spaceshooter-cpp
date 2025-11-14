@@ -21,6 +21,7 @@ int main(void)
     InitWindow(screen_width, screen_height, "Space Shooters");
     SetTargetFPS(60);
     game_initialize(); // Call function game
+
     while (!WindowShouldClose()) // When game is opened
     {
         handle_input();
@@ -30,6 +31,7 @@ int main(void)
 
         ClearBackground(BLACK);
         game_draw();
+
         // DrawText("Congrats! You created your first window!", 0 , 0, 20, GRAY);
         EndDrawing();
     }

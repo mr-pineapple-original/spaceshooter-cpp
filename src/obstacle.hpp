@@ -11,7 +11,7 @@ struct Obstacle {
     {
         position = i_position; // To set the position of the obstacle with respect to the grid using parameter i_position
 
-        ; // This is the obstacle at the start as it gets damaged more of the 1s will turn into 0s to show that it is damaged
+         // This is the obstacle at the start as it gets damaged more of the 1s will turn into 0s to show that it is damaged
 
         for(unsigned int row = 0; row < grid.size(); ++row)
         {
