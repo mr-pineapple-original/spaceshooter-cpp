@@ -22,12 +22,7 @@ std::vector<Obstacle> obstacle_create()
     } 
     return obstacles;
 }
-void game_initialize()
-{
-    spaceship_initialize();
-    obstacles = obstacle_create();
-    
-}
+
 void game_uninitialize()
 {
     
@@ -43,6 +38,10 @@ void game_draw()
     for(auto& obstacle : obstacles)
     {
         obstacle.draw();
+    }
+    for(auto& alien : aliens)
+    {
+      alien.draw();
     }
 
 }
@@ -72,19 +71,9 @@ void game_initialize() {
   aliens = create_aliens();
 }
 
-void game_uninitialize() {}
 
-void game_draw() {
-  spaceship_draw(); // Draw the spaceship from the spaceship header file
-  //
-  //
-  for (auto &alien : aliens) {
-    alien.draw();
-  }
-  for (auto &laser : spaceship_lasers) {
-    laser.draw();
-  }
-}
+
+
 
 // To avoid cross referencing we put the delete laser function in the game
 // header file
