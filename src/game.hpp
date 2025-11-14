@@ -30,9 +30,17 @@ std::vector<Alien> create_aliens() {
   std::vector<Alien> temp_aliens;
   for (int row = 0; row < 5; row++) {
     for (int column = 0; column < 11; column++) {
+
+      int alien_type = 1;
+
+      if (row > 3) {
+        alien_type = 3;
+      } else if (row > 1) {
+        alien_type = 2;
+      }
       float x = column * 55;
       float y = row * 55;
-      temp_aliens.push_back(Alien(1, {x + 75, y + 110}));
+      temp_aliens.push_back(Alien(alien_type, {x + 75, y + 110}));
     }
   }
   return temp_aliens;
