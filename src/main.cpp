@@ -1,15 +1,15 @@
 // Normal Libraries
-#include<iostream>
-#include<vector>
-#include<math.h>
+#include <iostream>
+#include <vector>
+#include <math.h>
 // Raylib Libraries
-#include<raylib.h>
+#include <raylib.h>
 // My Libraries
-#include"game.hpp"
-#include"spaceship.hpp"
-#include"obstacle.hpp"
-#include"enemy.hpp"
-#include"alien.hpp"
+#include "game.hpp"
+#include "spaceship.hpp"
+#include "obstacle.hpp"
+#include "enemy.hpp"
+#include "alien.hpp"
 // Using namespace
 using namespace std;
 
@@ -32,13 +32,13 @@ int main(void)
 
         ClearBackground(BLACK);
         game_draw();
-        
+
         // DrawText("Congrats! You created your first window!", 0 , 0, 20, GRAY);
         EndDrawing();
     }
     save_highscore_in_file(highscore);
     CloseWindow();
-    CloseAudioDevice(); 
+    CloseAudioDevice();
 
     return 0;
 }

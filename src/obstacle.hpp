@@ -7,6 +7,9 @@ struct Obstacle {
     Vector2 position;
     std::vector<Block> blocks;
     static std::vector<std::vector<int>> grid;
+
+    
+    Obstacle() : position({0, 0}) {};
     Obstacle(Vector2 i_position)
     {
         position = i_position; // To set the position of the obstacle with respect to the grid using parameter i_position
