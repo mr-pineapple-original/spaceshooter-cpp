@@ -3,6 +3,7 @@
 #include <raylib.h> // To render Graphics in this file
 #include <vector>
 
+float spaceship_fire_delay = 0.35;
 double spaceship_last_fired_time;
 Texture2D spaceship_image;
 Vector2 spaceship_position; // Position of Spaceship
@@ -17,9 +18,9 @@ void spaceship_initialize() {
   spaceship_position.x = (GetScreenWidth() - spaceship_image.width) / 2;
   spaceship_position.y = GetScreenHeight() - spaceship_image.height;
 }
-void spaceship_uninitialize()
-{
-  UnloadTexture(spaceship_image); // To free up the memory by unloading the player sprite
+void spaceship_uninitialize() {
+  UnloadTexture(
+      spaceship_image); // To free up the memory by unloading the player sprite
   UnloadSound(spaceship_lasers_sound);
 }
 
@@ -35,7 +36,7 @@ void spaceship_boundaries() {
   }
 }
 void spaceship_fire_laser() {
-  if (GetTime() - spaceship_last_fired_time >= 0.35) {
+  if (GetTime() - spaceship_last_fired_time >= spaceship_fire_delay) {
     spaceship_lasers.push_back(
         Laser({spaceship_position.x + spaceship_image.width / 2 - 4,
                spaceship_position.y},

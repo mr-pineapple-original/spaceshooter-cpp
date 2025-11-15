@@ -2,12 +2,14 @@
 #include "alien.hpp"
 #include "obstacle.hpp"  // To include the obstacle file's struct
 #include "spaceship.hpp" // To include spaceship file's functions
-#include <raylib.h>
 #include <fstream> // To store highscore in a text file so we load the text from it everytime the game is opened
+#include <raylib.h>
 
-int alien_direction = 1; // Global variable to use it in the move_alien function and passing it as
+int alien_direction =
+    1; // Global variable to use it in the move_alien function and passing it as
        // an argument to update() function in the alien.hpp file
-constexpr static float alien_laser_interval = 0.35; // Global variable to calculate the laser shooting interval by aliens
+constexpr static float alien_laser_interval =
+    0.35; // Global variable to calculate the laser shooting interval by aliens
 float alien_fired_last_time = 0.0;
 std::vector<Obstacle>
     obstacles; // A universial vector variable to store obstacles so we can
@@ -17,13 +19,14 @@ std::vector<Laser> alien_lasers;
 
 int spaceship_health = 3;
 bool game_run; // To display the Game Over screen once it becomes false
-bool is_paused = false;
+bool game_is_paused = false;
+int game_current_level = 1;
 int score; // To display score in the Game
 int highscore;
-Music music; // To use this variable to open music file
-Sound enemy_death_sound; // To use this variable to open enemy_death_sound
+Music music;                 // To use this variable to open music file
+Sound enemy_death_sound;     // To use this variable to open enemy_death_sound
 Sound spaceship_death_sound; // To use this variable to open game_over
-Sound spaceship_damage; // To use this variable to open player_hurt
+Sound spaceship_damage;      // To use this variable to open player_hurt
 
 // To avoid cross referencing we put the create obstacle function in the game
 // header file
@@ -50,38 +53,31 @@ std::vector<Obstacle> obstacle_create() {
 
 void check_highscore() // To check for highscore
 {
-  if(score>highscore)
-  {
+  if (score > highscore) {
     highscore = score;
   }
 }
 
-void save_highscore_in_file(int highscore)
-{
+void save_highscore_in_file(int highscore) {
   std::ofstream highscore_file("highscore.txt");
-  if(highscore_file.is_open())
-  {
-    highscore_file << highscore; // Write the current highscore in the highscore_file file pointer to update the value in the highscore.txt file
+  if (highscore_file.is_open()) {
+    highscore_file
+        << highscore; // Write the current highscore in the highscore_file file
+                      // pointer to update the value in the highscore.txt file
     highscore_file.close();
-  }
-  else
-  {
+  } else {
     std::cerr << "Failed to save highscore to file" << std::endl;
   }
 }
 
-int load_highscore_from_file()
-{
+int load_highscore_from_file() {
   int loaded_highscore = 0;
   std::ifstream highscore_file("highscore.txt");
-    if(highscore_file.is_open())
-    {
-      highscore_file >> loaded_highscore;
-    }
-    else
-    {
-      std::cerr <<  "Failed to load highscore from file." << std::endl;
-    }
+  if (highscore_file.is_open()) {
+    highscore_file >> loaded_highscore;
+  } else {
+    std::cerr << "Failed to load highscore from file." << std::endl;
+  }
   return loaded_highscore;
 }
 
@@ -97,6 +93,29 @@ void game_uninitialize() {
 }
 void game_draw() {
 
+  std::string health_text = "Health: " + std::to_string(spaceship_health);
+  std::string score_text = "Score: " + std::to_string(score);
+  std::string highscore_text = "High-Score: " + std::to_string(highscore);
+  std::string level_text =
+      "Current Level: " + std::to_string(game_current_level);
+
+  DrawText(health_text.c_str(), 0, 0, 20, RED);
+  DrawText(level_text.c_str(), 0, 680, 20, GREEN);
+
+  DrawText(score_text.c_str(), 630, 0, 20, YELLOW);
+  DrawText(highscore_text.c_str(), 630 / 2, 0, 20, BLUE);
+
+  if (game_is_paused) {
+    DrawText("Game Paused", (GetScreenWidth() / 2) - 120,
+             (GetScreenHeight() / 2) - 20, 40, LIGHTGRAY);
+  }
+  if (!game_run) {
+    ClearBackground(BLACK);
+
+    DrawText("You lose! Press 'Enter' to restart", 15,
+             (GetScreenHeight() / 2) - 20, 40, LIGHTGRAY);
+  }
+
   spaceship_draw(); // Draw the spaceship from the spaceship header file
   //
   for (auto &laser : spaceship_lasers) {
@@ -110,19 +129,6 @@ void game_draw() {
   }
   for (auto &laser : alien_lasers) {
     laser.draw();
-  }
-  std::string health_text = "Health: " + std::to_string(spaceship_health);
-  std::string score_text = "Score:" + std::to_string(score);
-  std::string highscore_text = "High-Score:" + std::to_string(highscore);
-  DrawText(health_text.c_str(), 0, 0, 20, RED);
-  DrawText(score_text.c_str(), 630, 0,  20, YELLOW);
-  DrawText(highscore_text.c_str(), 630/2, 0 , 20, BLUE);
-
-  if (!game_run) {
-    ClearBackground(BLACK);
-
-    DrawText("You lose! Press 'Enter' to restart", 15,
-             (GetScreenHeight() / 2) - 20, 40, LIGHTGRAY);
   }
 }
 
@@ -193,9 +199,11 @@ void alien_move() // To move the aliens horizontally in the game.hpp file by
   }
 }
 
-void game_initialize()
-{
+void game_initialize() {
   score = 0;
+  game_current_level = 1;
+  aliens_speed = 1;
+  spaceship_fire_delay = 0.35;
   highscore = load_highscore_from_file();
   game_run = true;
   spaceship_health = 3;
@@ -214,12 +222,9 @@ void game_initialize()
 void laser_delete() {
   for (auto laser = spaceship_lasers.begin();
        laser != spaceship_lasers.end();) {
-    if (!laser->active)
-    {
+    if (!laser->active) {
       laser = spaceship_lasers.erase(laser);
-    }
-    else
-    {
+    } else {
       ++laser;
     }
   }
@@ -239,34 +244,36 @@ void game_over() {
   game_run = false;
   save_highscore_in_file(highscore);
 }
-void check_for_collisions()
-{
+
+void game_level_completed() {
+  std::cout << "Level completed" << endl;
+  aliens_speed += 0.2;
+  spaceship_fire_delay -= 0.05;
+  game_current_level += 1;
+  aliens = create_aliens();
+  obstacles = obstacle_create();
+}
+void check_for_collisions() {
   // Spaceship lasers
   for (auto &laser : spaceship_lasers) {
     auto it = aliens.begin();
-    while (it != aliens.end())
-    {
-      if (CheckCollisionRecs(it->get_rect(), laser.get_rect()))
-      {
+    while (it != aliens.end()) {
+      if (CheckCollisionRecs(it->get_rect(), laser.get_rect())) {
         PlaySound(enemy_death_sound);
-        if(it -> type == 1)
-        {
-          score=score+100;
+        if (it->type == 1) {
+          score = score + 100;
         }
-        if(it -> type == 2)
-        {
-          score=score+200;
+        if (it->type == 2) {
+          score = score + 200;
         }
-        if(it-> type == 3)
-        {
-          score=score+300;
+        if (it->type == 3) {
+          score = score + 300;
         }
         check_highscore();
         it = aliens.erase(it);
+
         laser.active = false;
-      }
-      else
-      {
+      } else {
         ++it;
       }
     }
@@ -284,6 +291,9 @@ void check_for_collisions()
     }
   }
 
+  if (aliens.empty()) {
+    game_level_completed();
+  }
   // Alien lasers
   for (auto &laser : alien_lasers) {
     if (CheckCollisionRecs(laser.get_rect(), spaceship_get_rect())) {
@@ -327,6 +337,10 @@ void check_for_collisions()
 }
 void game_update() {
   if (!game_run) {
+    return;
+  }
+
+  if (game_is_paused) {
     return;
   }
 
@@ -385,7 +399,10 @@ void handle_input() {
     save_highscore_in_file(highscore);
     CloseWindow();
   }
-  if (IsKeyDown(KEY_P)) {
-      is_paused = true;
+  if (IsKeyPressed(KEY_P)) {
+    game_is_paused = !game_is_paused;
+  }
+  if (IsKeyPressed(KEY_N)) {
+    game_level_completed();
   }
 }

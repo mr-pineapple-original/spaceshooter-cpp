@@ -1,6 +1,7 @@
 #pragma once
 #include <raylib.h>
 
+float aliens_speed = 1.0f;
 struct Alien {
   static Texture2D image[3];
   int type;
@@ -52,7 +53,10 @@ struct Alien {
   }
 
   void update(int alien_direction) {
-    position.x = position.x + alien_direction;
+    position.x =
+        position.x +
+        alien_direction *
+            aliens_speed; // Draw the spaceship from the spaceship header file
   }
 
   void draw() { DrawTextureV(image[type - 1], position, WHITE); }
