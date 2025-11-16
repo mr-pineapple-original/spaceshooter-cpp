@@ -15,7 +15,7 @@ float alien_fired_last_time = 0.0;
 Obstacle obstacles[5];
 // std::vector<Obstacle> obstacles; // A universial vector variable to store
 // obstacles so we can store it and use it in game_initialize function
-Alien aliens[45];
+Alien aliens[55];
 std::vector<Laser> alien_lasers;
 
 int spaceship_health = 3;
@@ -62,7 +62,8 @@ void check_highscore() // To check for highscore
 void save_highscore_in_file(int highscore) {
   std::ofstream highscore_file("highscore.txt");
   if (highscore_file.is_open()) {
-    highscore_file << highscore; // Write the current highscore in the highscore_file file
+    highscore_file
+        << highscore; // Write the current highscore in the highscore_file file
                       // pointer to update the value in the highscore.txt file
     highscore_file.close();
   } else {
@@ -89,7 +90,7 @@ int load_highscore_from_file() {
 }
 
 void game_uninitialize() {
-  for (int i = 0; i <= 45; i++) {
+  for (int i = 0; i <= 54; i++) {
     aliens[i] = Alien();
     aliens[i].uninitalize();
   }
@@ -169,7 +170,7 @@ void alien_laser() // To shoot lasers from the aliens
 {
   double current_time = GetTime();
   if (current_time - alien_fired_last_time >= alien_laser_interval) {
-    int random_value = GetRandomValue(0, 45 - 1);
+    int random_value = GetRandomValue(0, 55 - 1);
     Alien alien = aliens[random_value];
     alien_lasers.push_back(
         Laser({alien.position.x + alien.image[alien.type - 1].width / 2,
@@ -272,7 +273,7 @@ void game_level_completed() {
 
 bool aliens_is_empty() {
   bool flag = true;
-  for (int i = 0; i <= 44; i++) {
+  for (int i = 0; i <= 54; i++) {
     if (!(aliens[i] == Alien())) {
       flag = false;
     }
@@ -284,7 +285,7 @@ void check_for_collisions() {
   // Spaceship lasers
   for (auto &laser : spaceship_lasers) {
 
-    for (int i = 0; i <= 44; i++) {
+    for (int i = 0; i <= 54; i++) {
       if (CheckCollisionRecs(aliens[i].get_rect(), laser.get_rect())) {
         PlaySound(enemy_death_sound);
         if (aliens[i].type == 1) {
@@ -393,7 +394,7 @@ void game_update() {
 }
 
 void aliens_clear() {
-  for (int i = 0; i <= 44; i++) {
+  for (int i = 0; i <= 54; i++) {
     aliens[i] = Alien();
   }
 }
