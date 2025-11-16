@@ -155,19 +155,19 @@ void game_draw()
 
   spaceship_draw(); // Draw the spaceship from the spaceship header file
   //
-  for (unsigned int i = 0; i<100; i++)
+  for (unsigned int i = 0; i < 100; i++)
   {
     spaceship_lasers[i].draw();
   }
-  for (unsigned int i = 0; i<5; i++)
+  for (unsigned int i = 0; i < 5; i++)
   {
     obstacles[i].draw();
   }
-  for (unsigned int i = 0; i<55; i++)
+  for (unsigned int i = 0; i < 55; i++)
   {
     aliens[i].draw();
   }
-  for (unsigned int i = 0; i<100; i++)
+  for (unsigned int i = 0; i < 100; i++)
   {
     alien_lasers[i].draw();
   }
@@ -201,6 +201,7 @@ void create_aliens()
 
 void alien_laser() // To shoot lasers from the aliens
 {
+
   double current_time = GetTime();
   int random_value = GetRandomValue(0, 55 - 1);
 
@@ -208,23 +209,27 @@ void alien_laser() // To shoot lasers from the aliens
   if (current_time - alien_fired_last_time >= alien_laser_interval &&
       alien.active != false)
   {
-    if(alien_laser_count==ALIEN_LASER_MAX_COUNT)
+    if (alien_laser_count == ALIEN_LASER_MAX_COUNT)
     {
+      std::cout << "[Alien] Err! Max laser count reached, decreasing laser count.... " << std::endl;
       alien_laser_count--;
     }
-    alien_lasers[alien_laser_count] = 
+    std::cout << "[Alien] Shooting the laser.... " << alien_laser_count << std::endl;
+    alien_laser_count++;
+    alien_lasers[alien_laser_count] =
         Laser({alien.position.x + alien.image[alien.type - 1].width / 2,
                alien.position.y + alien.image[alien.type - 1].height},
               6);
-    alien_laser_count++;
+    
     alien_fired_last_time = GetTime();
   }
+  //std::cout << "Alien shot the laser...." << std::endl;
 }
 
 void alien_move_down(int distance) // To move the aliens down in the game.hpp file by calling
-                  // this function in the alien_move function
+                                   // this function in the alien_move function
 {
-  for (unsigned int i =0; i<55; i++)
+  for (unsigned int i = 0; i < 55; i++)
   {
     aliens[i].position.y = aliens[i].position.y + distance;
   }
@@ -233,7 +238,7 @@ void alien_move_down(int distance) // To move the aliens down in the game.hpp fi
 void alien_move() // To move the aliens horizontally in the game.hpp file by
                   // calling a function update() from the alien struct
 {
-  for (int i =0; i<55; i++)
+  for (int i = 0; i < 55; i++)
   {
     if (aliens[i].position.x + aliens[i].image[aliens[i].type - 1].width >
         GetScreenWidth()) // To avoid aliens getting out from the right side of
@@ -244,7 +249,7 @@ void alien_move() // To move the aliens horizontally in the game.hpp file by
       alien_move_down(2);   // To move the alien 4 pixels down
     }
     if (aliens[i].position.x < 0) // To avoid aliens getting out from the left side
-                              // of the window screen
+                                  // of the window screen
     {
       alien_direction = 1; // We make them move right if they collide from the
                            // left boundary of the screen
@@ -277,41 +282,43 @@ void game_initialize()
 // header file
 void laser_delete()
 {
-  // for (auto laser = spaceship_lasers;
-  //      laser != SPACESHIP_MAX_LASER_COUNT - 1;)
-  // {
-  //   if (!laser->active)
-  //   {
-  //     laser = spaceship_lasers.erase(laser);
-  //   }
-  //   else
-  //   {
-  //     ++laser;
-  //   }
-  // }
-  for (int i = 0; i <= SPACESHIP_MAX_LASER_COUNT - 1; i++){
-    if (!spaceship_lasers[i].active) {
-        spaceship_lasers[i] = Laser();
-        spaceship_laser_count--;
+  for (int i = 0; i <= SPACESHIP_MAX_LASER_COUNT - 1; i++)
+  {
+    if (!spaceship_lasers[i].active)
+    {
+      // null lasers are at -100, -100
+      if (spaceship_lasers[i].position.x == -100 && spaceship_lasers[i].position.y == -100) {
+        continue;
       }
+      std::cout << "[Spaceship] Deleting inactive lasers, active lasers left:  " << alien_laser_count << std::endl;
+      spaceship_lasers[i] = Laser();
+      spaceship_laser_count--;
+
+      if (spaceship_laser_count <= 0)
+      {
+        spaceship_laser_count = 0;
+      }
+    }
   }
 
-  // for (auto laser = alien_lasers.begin(); laser != alien_lasers.end();)
-  // {
-  //   if (!laser->active)
-  //   {
-  //     laser = alien_lasers.erase(laser);
-  //   }
-  //   else
-  //   {
-  //     ++laser;
-  //   }
-  // }
-  for (int i = 0; i <= ALIEN_LASER_MAX_COUNT - 1; i++){
-    if (!alien_lasers[i].active) {
-        alien_lasers[i] = Laser();
-        alien_laser_count--;
+  for (int i = 0; i <= ALIEN_LASER_MAX_COUNT - 1; i++)
+  {
+    if (!alien_lasers[i].active)
+    {
+      // null lasers are at -100, -100
+      if (alien_lasers[i].position.x == -100 && alien_lasers[i].position.y == -100) {
+        continue;
       }
+      std::cout << "[Alien] Deleting inactive lasers, active lasers left:  " << alien_laser_count << std::endl;
+      alien_lasers[i] = Laser();
+      
+      alien_laser_count--;
+
+      if (alien_laser_count <= 0)
+      {
+        alien_laser_count = 0;
+      }
+    }
   }
 }
 
@@ -356,11 +363,11 @@ bool aliens_is_empty()
 void check_for_collisions()
 {
   // Spaceship lasers
-  for (unsigned int it = 0; it < SPACESHIP_MAX_LASER_COUNT; it++)
+  for (auto &laser : spaceship_lasers)
   {
     for (int j = 0; j <= 54; j++)
     {
-      if (CheckCollisionRecs(aliens[j].get_rect(), spaceship_lasers[it].get_rect()))
+      if (CheckCollisionRecs(aliens[j].get_rect(), laser.get_rect()))
       {
         PlaySound(enemy_death_sound);
         if (aliens[j].type == 1)
@@ -379,29 +386,18 @@ void check_for_collisions()
         // Delete the alien.
         aliens[j].active = false;
 
-        spaceship_lasers[it].active = false;
+        laser.active = false;
       }
     }
 
-    // for (auto &obstacle : obstacles) {
-    //   auto it = obstacle.blocks.begin();
-    //   while (it != obstacle.blocks.end()) {
-    //     if (CheckCollisionRecs(it->get_rect(), laser.get_rect())) {
-    //       it = obstacle.blocks.erase(it);
-    //       laser.active = false;
-    //     } else {
-    //       ++it;
-    //     }
-    //   }
-    // }
     for (int i = 0; i <= 4; i++)
     {
       for (int j = 0; j <= 275; j++)
       {
-        if (CheckCollisionRecs(obstacles[i].blocks[j].get_rect(), spaceship_lasers[it].get_rect()))
+        if (CheckCollisionRecs(obstacles[i].blocks[j].get_rect(), laser.get_rect()))
         {
           obstacles[i].blocks[j] = Block();
-          spaceship_lasers[it].active = false;
+          laser.active = false;
         }
       }
     }
@@ -412,11 +408,11 @@ void check_for_collisions()
     game_level_completed();
   }
   // Alien lasers
-  for (unsigned int it = 0; it < ALIEN_LASER_MAX_COUNT; it++)
+  for (auto &laser : alien_lasers)
   {
-    if (CheckCollisionRecs(alien_lasers[it].get_rect(), spaceship_get_rect()))
+    if (CheckCollisionRecs(laser.get_rect(), spaceship_get_rect()))
     {
-      alien_lasers[it].active = false;
+      laser.active = false;
       PlaySound(spaceship_damage);
       spaceship_health -= 1;
       if (spaceship_health == 0)
@@ -424,55 +420,29 @@ void check_for_collisions()
         game_over();
       }
     }
-    // for (auto &obstacle : obstacles)
-    // {
-    //   auto it = obstacle.blocks.begin();
-    //   while (it != obstacle.blocks.end())
-    //   {
-    //     if (CheckCollisionRecs(it->get_rect(), laser.get_rect()))
-    //     {
-    //       it = obstacle.blocks.erase(it);
-    //       laser.active = false;
-    //     }
-    //     else
-    //     {
-    //       ++it;
-    //     }
-    //   }
-    // }
+
+    // obstacles
     for (int i = 0; i <= 4; i++)
     {
+      // blocks
       for (int j = 0; j <= 275; j++)
       {
-        if (CheckCollisionRecs(obstacles[i].blocks[j].get_rect(), alien_lasers[it].get_rect()))
+        if (CheckCollisionRecs(obstacles[i].blocks[j].get_rect(), laser.get_rect()))
         {
           obstacles[i].blocks[j] = Block();
-          alien_lasers[it].active = false;
+          laser.active = false;
         }
       }
     }
   }
 
   // Aliens
-  for (int i=0; i<55; i++)
+  for (int i = 0; i < 55; i++)
   {
-    // for (auto &obstacle : obstacles)
-    // {
-    //   auto it = obstacle.blocks.begin();
-    //   while (it != obstacle.blocks.end())
-    //   {
-    //     if (CheckCollisionRecs(it->get_rect(), alien.get_rect()))
-    //     {
-    //       it = obstacle.blocks.erase(it);
-    //     }
-    //     else
-    //     {
-    //       ++it;
-    //     }
-    //   }
-    // }
+    // obstacles
     for (int j = 0; j <= 4; j++)
     {
+      // blocks
       for (int k = 0; k <= 275; k++)
       {
         if (CheckCollisionRecs(obstacles[j].blocks[k].get_rect(), aliens[i].get_rect()))
@@ -504,25 +474,24 @@ void game_update()
   {
     return;
   }
-
   UpdateMusicStream(music);
   spaceship_boundaries();
 
-  for (unsigned int i =0; i < SPACESHIP_MAX_LASER_COUNT; i++)
+  for (auto &laser : spaceship_lasers)
   {
-    spaceship_lasers[i].update();
+    laser.update();
   }
   laser_delete();
 
-  for (unsigned int i = 0; i < 5; i++)
+  for (auto &obstacle : obstacles)
   {
-    obstacles[i].draw();
+    obstacle.draw();
   }
   alien_laser();
-  for (unsigned int i =0; i <  ALIEN_LASER_MAX_COUNT; i++)
+  for (auto &laser : alien_lasers)
   {
-    alien_lasers[i].update();
-  }
+    laser.update();
+  };
   alien_move();
   check_for_collisions();
 }
@@ -535,12 +504,13 @@ void aliens_clear()
   }
 }
 
-void alien_lasers_clear() {
-  for(int i = 0; i <= ALIEN_LASER_MAX_COUNT - 1; i++) {
+void alien_lasers_clear()
+{
+  for (int i = 0; i <= ALIEN_LASER_MAX_COUNT - 1; i++)
+  {
     alien_lasers[i] = Laser();
   }
 }
-
 
 void game_reset()
 {
@@ -595,6 +565,7 @@ void handle_input()
   }
   if (IsKeyDown(KEY_SPACE))
   {
+    //std::cout << "[Input] Space pressed...." << std::endl;
     spaceship_fire_laser();
   }
 

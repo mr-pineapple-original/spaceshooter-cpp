@@ -14,9 +14,9 @@ struct Laser {
     position = {-100, -100};
   }
   Laser(Vector2 i_position, int i_speed) {
+    active = true;
     position = i_position;
     speed = i_speed;
-    active = true;
     image = LoadTexture("sprites/player-bullet.png");
   }
 
@@ -25,7 +25,7 @@ struct Laser {
     if (active) {
       if (position.y > GetScreenHeight() || position.y < 0) {
         active = false;
-        std::cout << "Laser Deleted \n";
+        std::cout << "[Laser] Laser Deleted \n";
       }
     }
   }

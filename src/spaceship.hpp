@@ -52,11 +52,13 @@ void spaceship_fire_laser()
     //     Laser({spaceship_position.x + spaceship_image.width / 2 - 4,
     //            spaceship_position.y},
     //           -6));
+    std::cout << "[Spaceship] Firing laser....  " << spaceship_laser_count << std::endl;
     spaceship_lasers[spaceship_laser_count] = Laser({spaceship_position.x + spaceship_image.width / 2 - 4,
                                                      spaceship_position.y},
                                                     -6);
     spaceship_laser_count += 1;
     spaceship_last_fired_time = GetTime();
+    // std::cout << "[Spaceship] Playing laser sound...." << std::endl;
     PlaySound(spaceship_lasers_sound);
   }
 }
