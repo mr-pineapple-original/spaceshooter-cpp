@@ -5,8 +5,8 @@ using namespace std;
 
 struct Obstacle {
     Vector2 position;
-    Block blocks[276];
-    static int grid[23][23];
+    Block blocks[299];
+    static int grid[13][23];
     Obstacle() { position = {0, 0}; }
     Obstacle(Vector2 i_position)
     {
@@ -16,7 +16,7 @@ struct Obstacle {
 
          // This is the obstacle at the start as it gets damaged more of the 1s will turn into 0s to show that it is damaged
 
-        for(unsigned int row = 0; row < 23; ++row)
+        for(unsigned int row = 0; row < 13; ++row)
         {
             for(unsigned int column = 0; column < 23; ++column)
             {

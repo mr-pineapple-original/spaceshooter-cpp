@@ -5,7 +5,7 @@
 struct Block
 {
   Vector2 position;
-  Block() : position({0, 0}) {}        // ADD THIS
+  Block() : position({0, 0}) {} // ADD THIS
   Block(Vector2 i_position) { position = i_position; }
 
   void draw()
