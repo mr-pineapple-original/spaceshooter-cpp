@@ -62,8 +62,7 @@ void check_highscore() // To check for highscore
 void save_highscore_in_file(int highscore) {
   std::ofstream highscore_file("highscore.txt");
   if (highscore_file.is_open()) {
-    highscore_file
-        << highscore; // Write the current highscore in the highscore_file file
+    highscore_file << highscore; // Write the current highscore in the highscore_file file
                       // pointer to update the value in the highscore.txt file
     highscore_file.close();
   } else {
