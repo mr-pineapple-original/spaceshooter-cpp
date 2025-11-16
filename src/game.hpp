@@ -13,8 +13,8 @@ float alien_fired_last_time = 0.0;
 Obstacle obstacles[5];
 // std::vector<Obstacle> obstacles; // A universial vector variable to store obstacles so we can
 // store it and use it in game_initialize function
-Alien aliens;
-std::vector<Laser> alien_lasers;
+Alien[45] aliens;
+Laser alien_lasers[100];
 
 int spaceship_health = 3;
 bool game_run;              // To display the Game Over screen once it becomes false
@@ -40,11 +40,9 @@ void create_obstacles()
   // game_running it exactly 4 times to create 4
   // objects and later draw them
   float obstacle_gap = (GetScreenWidth() - (4 * obstacle_width)) / 5.0f;
-  for (int i = 0; i != 4; i++) 
+  for (int i = 0; i != 4; i++)
   {
-    float obstacle_position_x =
-        (i + 1) * obstacle_gap +
-        i * obstacle_width; // To calculate the x position of the obstacle by
+    float obstacle_position_x =(i + 1) * obstacle_gap + i * obstacle_width; // To calculate the x position of the obstacle by
                             // ensuring they are evenly spaced
     float obstacle_position_y = GetScreenHeight() - 100;
 
@@ -206,9 +204,8 @@ void alien_laser() // To shoot lasers from the aliens
   }
 }
 
-void alien_move_down(
-    int distance) // To move the aliens down in the game.hpp file by calling
-                  // this function in the alien_move function
+void alien_move_down(int distance) // To move the aliens down in the game.hpp file by calling
+                                   // this function in the alien_move function
 {
   for (auto &alien : aliens)
   {
@@ -470,10 +467,11 @@ void game_reset()
   aliens.clear();
   alien_lasers.clear();
   // obstacles.clear();
-  
-  // bad way to clear obstacles 
-  for (int i = 0; i < 5; i++) {
-      obstacles[i] = Obstacle({-100, -100});
+
+  // bad way to clear obstacles
+  for (int i = 0; i < 5; i++)
+  {
+    obstacles[i] = Obstacle({-100, -100});
   }
 
   // recreate everything

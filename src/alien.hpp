@@ -59,13 +59,14 @@ struct Alien
 
   void update(int alien_direction)
   {
-    position.x =
-        position.x +
-        alien_direction *
-            aliens_speed; // Draw the spaceship from the spaceship header file
+    position.x = position.x + alien_direction * aliens_speed; 
   }
 
-  void draw() { DrawTextureV(image[type - 1], position, WHITE); }
+  // Draw the spaceship from the spaceship header file
+  void draw()
+  { 
+    DrawTextureV(image[type - 1], position, WHITE); 
+  }
 
   int get_type() { return type; }
 
