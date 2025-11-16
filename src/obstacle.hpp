@@ -5,20 +5,20 @@ using namespace std;
 
 struct Obstacle {
     Vector2 position;
-    std::vector<Block> blocks;
-    static std::vector<std::vector<int>> grid;
-
-    
-    Obstacle() : position({0, 0}) {};
+    Block blocks[276];
+    static int grid[23][23];
+    Obstacle() { position = {0, 0}; }
     Obstacle(Vector2 i_position)
     {
+        static const int Max_blocks = 276; // To store the total number of blocks made by the grid matrix
+        int block_count = 0; // To use the block_count as an iterator inside the loop to keep the count of total blocks so we can update it as it gets damaged
         position = i_position; // To set the position of the obstacle with respect to the grid using parameter i_position
 
          // This is the obstacle at the start as it gets damaged more of the 1s will turn into 0s to show that it is damaged
 
-        for(unsigned int row = 0; row < grid.size(); ++row)
+        for(unsigned int row = 0; row < 23; ++row)
         {
-            for(unsigned int column = 0; column < grid[0].size(); ++column)
+            for(unsigned int column = 0; column < 23; ++column)
             {
                 if(grid[row][column] == 1)
                 {
@@ -26,7 +26,11 @@ struct Obstacle {
                     float pos_x = position.x + column * 3;
                     float pos_y = position.y  + row * 3;
                     Block block = Block({pos_x, pos_y});
-                    blocks.push_back(block);
+                    if(block_count < Max_blocks)
+                    {
+                        blocks[block_count] = block;
+                        block_count++;
+                    }
                 }
             }
         }
@@ -34,9 +38,9 @@ struct Obstacle {
 
     void draw()
     {
-        for(auto& block: blocks)
+        for(unsigned int i = 0; i<276; i++)
         {
-            block.draw();
+            blocks[i].draw();
         }
     }
 

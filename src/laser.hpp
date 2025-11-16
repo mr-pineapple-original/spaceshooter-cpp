@@ -9,6 +9,7 @@ struct Laser {
   Texture2D image;
 
   Laser() {
+    active = false;
     speed = 0;
     position = {-100, -100};
   }

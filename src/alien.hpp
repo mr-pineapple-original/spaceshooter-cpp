@@ -20,7 +20,8 @@ struct Alien {
     if (image[type - 1].id == 0) // To only load the enemy aliens from the
                                  // memory if they haven't been loaded already
     {
-      switch (type) {
+      switch (type)
+      {
       case 1:
         image[0] = LoadTexture("sprites/alien-1.png");
         break;
@@ -52,14 +53,18 @@ struct Alien {
     // }
   }
 
-  void uninitalize() {
-    for (int i = 0; i != 4; i++) {
+  void uninitalize()
+  {
+    for (int i = 0; i != 3; i++)
+    {
       UnloadTexture(image[i]); // To unload all the types of the aliens
     }
   }
 
-  void update(int alien_direction) {
-    if (!active) {
+  void update(int alien_direction)
+  {
+    if (!active)
+    {
       return;
     }
     position.x = position.x + alien_direction * aliens_speed;
@@ -75,8 +80,10 @@ struct Alien {
 
   int get_type() { return type; }
 
-  Rectangle get_rect() {
-    if (!active) {
+  Rectangle get_rect()
+  {
+    if (!active)
+    {
       return {0, 0, 0, 0};
     }
 

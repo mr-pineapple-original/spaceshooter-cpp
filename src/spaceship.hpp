@@ -5,23 +5,27 @@
 
 float spaceship_fire_delay = 0.35;
 double spaceship_last_fired_time;
+int spaceship_laser_count = 0;
+const int SPACESHIP_MAX_LASER_COUNT = 100;
+
 Texture2D spaceship_image;
 Vector2 spaceship_position; // Position of Spaceship
-std::vector<Laser> spaceship_lasers;
+// std::vector<Laser> spaceship_lasers;
+Laser spaceship_lasers[100];
 Sound spaceship_lasers_sound;
 
 void spaceship_initialize()
 {
   spaceship_image = LoadTexture("sprites/player.png"); // Load the image and assing it to the
-                                         // image attribute
+                                                       // image attribute
   spaceship_lasers_sound = LoadSound("sounds/player_laser_shoot.wav");
   spaceship_position.x = (GetScreenWidth() - spaceship_image.width) / 2;
   spaceship_position.y = GetScreenHeight() - spaceship_image.height;
 }
 void spaceship_uninitialize()
 {
-  UnloadTexture(
-      spaceship_image); // To free up the memory by unloading the player sprite
+  // To free up the memory by unloading the player sprite
+  UnloadTexture(spaceship_image); 
   UnloadSound(spaceship_lasers_sound);
 }
 
@@ -44,10 +48,14 @@ void spaceship_fire_laser()
 {
   if (GetTime() - spaceship_last_fired_time >= spaceship_fire_delay)
   {
-    spaceship_lasers.push_back(
-        Laser({spaceship_position.x + spaceship_image.width / 2 - 4,
-               spaceship_position.y},
-              -6));
+    // spaceship_lasers.push_back(
+    //     Laser({spaceship_position.x + spaceship_image.width / 2 - 4,
+    //            spaceship_position.y},
+    //           -6));
+    spaceship_lasers[spaceship_laser_count] = Laser({spaceship_position.x + spaceship_image.width / 2 - 4,
+                                                     spaceship_position.y},
+                                                    -6);
+    spaceship_laser_count += 1;
     spaceship_last_fired_time = GetTime();
     PlaySound(spaceship_lasers_sound);
   }
@@ -59,9 +67,15 @@ Rectangle spaceship_get_rect()
           float(spaceship_image.width), float(spaceship_image.height)};
 }
 
+void spaceship_lasers_clear() {
+  for(int i = 0; i <= SPACESHIP_MAX_LASER_COUNT - 1; i++) {
+    spaceship_lasers[i] = Laser();
+  }
+}
+
 void spaceship_reset()
 {
   spaceship_position.x = (GetScreenWidth() - spaceship_image.width) / 2.0f;
   spaceship_position.y = (GetScreenHeight() - spaceship_image.height);
-  spaceship_lasers.clear();
+  spaceship_lasers_clear();
 }
