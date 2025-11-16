@@ -1,37 +1,21 @@
-#!/usr/bin/env bash
-set -e
+#!/bin/bash
+# Compile main.cpp using g++
 
-# Project paths
-BUILD_DIR="build"
-EXECUTABLE="SpaceShooter"
+g++ src/main.cpp src/obstacle.cpp src/alien.cpp -o src/main -I/usr/include -L/usr/lib -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
-# Create build directory if missing
-if [ ! -d "$BUILD_DIR" ]; then
-    mkdir "$BUILD_DIR"
-fi
+# Check if compilation succeeded
+if [ $? -ne 0 ]; then
+    echo
+    echo -e "\e[31mCompilation failed!\e[0m"
 
-# Enter build directory
-cd "$BUILD_DIR"
-
-# Run CMake configuration if no cache exists
-if [ ! -f "CMakeCache.txt" ]; then
-    echo "[CMake] Configuring project..."
-    cmake ..
-fi
-
-# Build using all available CPU cores
-echo "[Build] Compiling..."
-cmake --build . -- -j"$(nproc)"
-
-# Go back to project root
-cd ..
-
-# Run the compiled program if it exists
-if [ -f "$BUILD_DIR/$EXECUTABLE" ]; then
-    echo "[Run] Launching program..."
-    "./$BUILD_DIR/$EXECUTABLE"
-else
-    echo "[Error] Executable not found: $BUILD_DIR/$EXECUTABLE"
     exit 1
 fi
 
+echo
+echo -e "\e[32mCompilation successful. Running program...e[0m"
+echo
+
+# Run the compiled program
+./src/main
+
+echo

@@ -1,0 +1,1 @@
+save_highscore_in_file(highscore);
