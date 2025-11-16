@@ -169,9 +169,12 @@ void create_aliens() {
 void alien_laser() // To shoot lasers from the aliens
 {
   double current_time = GetTime();
-  if (current_time - alien_fired_last_time >= alien_laser_interval) {
-    int random_value = GetRandomValue(0, 55 - 1);
-    Alien alien = aliens[random_value];
+  int random_value = GetRandomValue(0, 55 - 1);
+
+  Alien alien = aliens[random_value];
+  if (current_time - alien_fired_last_time >= alien_laser_interval &&
+      alien.active != false) {
+
     alien_lasers.push_back(
         Laser({alien.position.x + alien.image[alien.type - 1].width / 2,
                alien.position.y + alien.image[alien.type - 1].height},
@@ -274,7 +277,7 @@ void game_level_completed() {
 bool aliens_is_empty() {
   bool flag = true;
   for (int i = 0; i <= 54; i++) {
-    if (!(aliens[i] == Alien())) {
+    if (aliens[i].active == true) {
       flag = false;
     }
   }
@@ -299,7 +302,7 @@ void check_for_collisions() {
         }
         check_highscore();
         // Delete the alien.
-        aliens[i] = Alien();
+        aliens[i].active = false;
 
         laser.active = false;
       }
