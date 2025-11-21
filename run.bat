@@ -1,26 +1,19 @@
 @echo off
+REM Compile main.cpp using g++
+g++ -g src\main.cpp src\obstacle.cpp src\alien.cpp -o src\main -I"C:\msys64\ucrt64\include" -L"C:\msys64\ucrt64\lib" -lraylib -lopengl32 -lgdi32 -lwinmm
 
-
-echo Creating build directory...
-mkdir build
-cd build
-
-echo Configuring project with CMake...
-cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release ..
-
-echo Building project...
-mingw32-make
-
-IF EXIST SpaceShooter.exe (
-    cd ..
-    echo Running SpaceShooter.exe...
-    build\SpaceShooter.exe
-) ELSE (
-    echo SpaceShooter.exe not found!
+REM Check if compilation succeeded
+if %errorlevel% neq 0 (
+    echo.
+    echo Compilation failed!
+    exit /b %errorlevel%
 )
 
-cd ..
+echo.
+echo Compilation successful. Running program...
+echo.
 
-echo Done!
+REM Run the compiled program
+.\src\main.exe
 
-
+echo.
